@@ -37,35 +37,12 @@ type ModulesInterface interface {
 	// SetProjectConfig sets specific project config
 	SetProjectConfig(ctx context.Context, config *config.ProjectConfig) error
 
-	// SetDatabaseConfig sets the config of crud, auth, schema and realtime modules
-	SetDatabaseConfig(ctx context.Context, projectID string, databaseConfigs config.DatabaseConfigs, schemaConfigs config.DatabaseSchemas, ruleConfigs config.DatabaseRules, prepConfigs config.DatabasePreparedQueries) error
-	SetDatabaseSchemaConfig(ctx context.Context, projectID string, schemaConfigs config.DatabaseSchemas) error
-	SetDatabaseRulesConfig(ctx context.Context, projectID string, ruleConfigs config.DatabaseRules) error
-	SetDatabasePreparedQueryConfig(ctx context.Context, projectID string, prepConfigs config.DatabasePreparedQueries) error
-
-	// SetFileStoreConfig sets the config of auth and filestore modules
-	SetFileStoreConfig(ctx context.Context, projectID string, fileStore *config.FileStoreConfig) error
-	SetFileStoreSecurityRuleConfig(ctx context.Context, projectID string, fileRule config.FileStoreRules) error
-
-	// SetServicesConfig sets the config of auth and functions modules
-	SetRemoteServiceConfig(ctx context.Context, projectID string, services config.Services) error
-
 	SetLetsencryptConfig(ctx context.Context, projectID string, c *config.LetsEncrypt) error
 
 	SetIngressRouteConfig(ctx context.Context, projectID string, routes config.IngressRoutes) error
 	SetIngressGlobalRouteConfig(ctx context.Context, projectID string, c *config.GlobalRoutesConfig) error
 
-	// SetEventingConfig sets the config of eventing module
-	SetEventingConfig(ctx context.Context, projectID string, eventingConfig *config.EventingConfig, secureObj config.EventingRules, eventingSchemas config.EventingSchemas, eventingTriggers config.EventingTriggers) error
-	SetEventingSchemaConfig(ctx context.Context, projectID string, schemaObj config.EventingSchemas) error
-	SetEventingTriggerConfig(ctx context.Context, projectID string, triggerObj config.EventingTriggers) error
-	SetEventingRuleConfig(ctx context.Context, projectID string, secureObj config.EventingRules) error
-
-	// SetUsermanConfig set the config of the userman module
-	SetUsermanConfig(ctx context.Context, projectID string, auth config.Auths) error
-
 	// Getters
-	GetSchemaModuleForSyncMan(projectID string) (model.SchemaEventingInterface, error)
 	GetAuthModuleForSyncMan(projectID string) (model.AuthSyncManInterface, error)
 	LetsEncrypt() *letsencrypt.LetsEncrypt
 	Routing() *routing.Routing

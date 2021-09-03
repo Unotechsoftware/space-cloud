@@ -6,7 +6,7 @@ import (
 	"testing"
 
 	"github.com/spaceuptech/space-cloud/gateway/config"
-	"github.com/spaceuptech/space-cloud/gateway/modules/crud"
+
 )
 
 // this test generates a tokenstring even if object is empty is this the behaviour we want

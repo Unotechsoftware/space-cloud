@@ -185,40 +185,6 @@ func (s *Manager) Start(port int) error {
 			}
 			_ = s.modules.SetProjectConfig(ctx, s.projectConfig.Projects[projectID].ProjectConfig)
 
-		case config.ResourceAuthProvider:
-			_ = s.modules.SetUsermanConfig(ctx, projectID, s.projectConfig.Projects[projectID].Auths)
-
-		case config.ResourceDatabaseConfig:
-			p := s.projectConfig.Projects[projectID]
-			_ = s.modules.SetDatabaseConfig(ctx, projectID, p.DatabaseConfigs, p.DatabaseSchemas, p.DatabaseRules, p.DatabasePreparedQueries)
-
-		case config.ResourceDatabaseSchema:
-			_ = s.modules.SetDatabaseSchemaConfig(ctx, projectID, s.projectConfig.Projects[projectID].DatabaseSchemas)
-
-		case config.ResourceDatabaseRule:
-			_ = s.modules.SetDatabaseRulesConfig(ctx, projectID, s.projectConfig.Projects[projectID].DatabaseRules)
-
-		case config.ResourceDatabasePreparedQuery:
-			_ = s.modules.SetDatabasePreparedQueryConfig(ctx, projectID, s.projectConfig.Projects[projectID].DatabasePreparedQueries)
-
-		case config.ResourceEventingConfig:
-			p := s.projectConfig.Projects[projectID]
-			_ = s.modules.SetEventingConfig(ctx, projectID, p.EventingConfig, p.EventingRules, p.EventingSchemas, p.EventingTriggers)
-
-		case config.ResourceEventingSchema:
-			_ = s.modules.SetEventingSchemaConfig(ctx, projectID, s.projectConfig.Projects[projectID].EventingSchemas)
-
-		case config.ResourceEventingRule:
-			_ = s.modules.SetEventingRuleConfig(ctx, projectID, s.projectConfig.Projects[projectID].EventingRules)
-
-		case config.ResourceEventingTrigger:
-			_ = s.modules.SetEventingTriggerConfig(ctx, projectID, s.projectConfig.Projects[projectID].EventingTriggers)
-
-		case config.ResourceFileStoreConfig:
-			_ = s.modules.SetFileStoreConfig(ctx, projectID, s.projectConfig.Projects[projectID].FileStoreConfig)
-
-		case config.ResourceFileStoreRule:
-			_ = s.modules.SetFileStoreSecurityRuleConfig(ctx, projectID, s.projectConfig.Projects[projectID].FileStoreRules)
 
 		case config.ResourceProjectLetsEncrypt:
 			_ = s.modules.SetLetsencryptConfig(ctx, projectID, s.projectConfig.Projects[projectID].LetsEncrypt)
@@ -228,9 +194,6 @@ func (s *Manager) Start(port int) error {
 
 		case config.ResourceIngressGlobal:
 			_ = s.modules.SetIngressGlobalRouteConfig(ctx, projectID, s.projectConfig.Projects[projectID].IngressGlobal)
-
-		case config.ResourceRemoteService:
-			_ = s.modules.SetRemoteServiceConfig(ctx, projectID, s.projectConfig.Projects[projectID].RemoteService)
 
 		case config.ResourceCluster:
 			s.globalModules.SetMetricsConfig(s.projectConfig.ClusterConfig.EnableTelemetry)

@@ -37,8 +37,8 @@ type Module struct {
 }
 
 // Init creates a new instance of the auth object
-func Init(clusterID, nodeID string, crud model.CrudAuthInterface, adminMan adminMan, integrationMan integrationManagerInterface) *Module {
-	return &Module{clusterID: clusterID, nodeID: nodeID, dbRules: make(config.DatabaseRules), dbPrepQueryRules: make(config.DatabasePreparedQueries), crud: crud, adminMan: adminMan, jwt: jwtUtils.New(), integrationMan: integrationMan}
+func Init(clusterID, nodeID string, adminMan adminMan, integrationMan integrationManagerInterface) *Module {
+	return &Module{clusterID: clusterID, nodeID: nodeID, dbRules: make(config.DatabaseRules), dbPrepQueryRules: make(config.DatabasePreparedQueries), adminMan: adminMan, jwt: jwtUtils.New(), integrationMan: integrationMan}
 }
 
 // GetInternalAccessToken returns the token that can be used internally by Space Cloud
