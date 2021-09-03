@@ -40,58 +40,10 @@ func (s *Server) routes(profiler bool, staticPath string, restrictedHosts []stri
 	router.Methods(http.MethodGet).Path("/v1/config/cluster").HandlerFunc(handlers.HandleGetClusterConfig(s.managers.Admin(), s.managers.Sync()))
 	router.Methods(http.MethodPost).Path("/v1/config/cluster").HandlerFunc(handlers.HandleSetClusterConfig(s.managers.Admin(), s.managers.Sync()))
 
-	router.Methods(http.MethodGet).Path("/v1/config/projects/{project}/remote-service/service").HandlerFunc(handlers.HandleGetService(s.managers.Admin(), s.managers.Sync()))
-	router.Methods(http.MethodPost).Path("/v1/config/projects/{project}/remote-service/service/{id}").HandlerFunc(handlers.HandleAddService(s.managers.Admin(), s.managers.Sync()))
-	router.Methods(http.MethodDelete).Path("/v1/config/projects/{project}/remote-service/service/{id}").HandlerFunc(handlers.HandleDeleteService(s.managers.Admin(), s.managers.Sync()))
-
-	router.Methods(http.MethodGet).Path("/v1/config/projects/{project}/user-management/provider").HandlerFunc(handlers.HandleGetUserManagement(s.managers.Admin(), s.managers.Sync()))
-	router.Methods(http.MethodPost).Path("/v1/config/projects/{project}/user-management/provider/{id}").HandlerFunc(handlers.HandleSetUserManagement(s.managers.Admin(), s.managers.Sync()))
-	router.Methods(http.MethodDelete).Path("/v1/config/projects/{project}/user-management/provider/{id}").HandlerFunc(handlers.HandleDeleteUserManagement(s.managers.Admin(), s.managers.Sync()))
-
 	router.Methods(http.MethodGet).Path("/v1/config/caching/config").HandlerFunc(handlers.HandleGetCacheConfig(s.managers.Admin(), s.managers.Sync()))
 	router.Methods(http.MethodPost).Path("/v1/config/caching/config/{id}").HandlerFunc(handlers.HandleSetCacheConfig(s.managers.Admin(), s.managers.Sync()))
 	router.Methods(http.MethodGet).Path("/v1/external/caching/connection-state").HandlerFunc(handlers.HandleGetCacheConnectionState(s.managers.Admin(), s.modules.Caching()))
 	router.Methods(http.MethodDelete).Path("/v1/external/projects/{project}/caching/purge-cache").HandlerFunc(handlers.HandlePurgeCache(s.managers.Admin(), s.modules.Caching()))
-	router.Methods(http.MethodPost).Path("/v1/external/caching/{project}/instant-invalidate").HandlerFunc(handlers.HandleInstantInvalidate(s.modules))
-
-	router.Methods(http.MethodGet).Path("/v1/config/projects/{project}/eventing/config").HandlerFunc(handlers.HandleGetEventingConfig(s.managers.Admin(), s.managers.Sync()))
-	router.Methods(http.MethodPost).Path("/v1/config/projects/{project}/eventing/config/{id}").HandlerFunc(handlers.HandleSetEventingConfig(s.managers.Admin(), s.managers.Sync()))
-	router.Methods(http.MethodGet).Path("/v1/config/projects/{project}/eventing/triggers").HandlerFunc(handlers.HandleGetEventingTriggers(s.managers.Admin(), s.managers.Sync()))
-	router.Methods(http.MethodPost).Path("/v1/config/projects/{project}/eventing/triggers/{id}").HandlerFunc(handlers.HandleAddEventingTriggerRule(s.managers.Admin(), s.managers.Sync()))
-	router.Methods(http.MethodDelete).Path("/v1/config/projects/{project}/eventing/triggers/{id}").HandlerFunc(handlers.HandleDeleteEventingTriggerRule(s.managers.Admin(), s.managers.Sync()))
-	router.Methods(http.MethodGet).Path("/v1/config/projects/{project}/eventing/schema").HandlerFunc(handlers.HandleGetEventingSchema(s.managers.Admin(), s.managers.Sync()))
-	router.Methods(http.MethodPost).Path("/v1/config/projects/{project}/eventing/schema/{id}").HandlerFunc(handlers.HandleSetEventingSchema(s.managers.Admin(), s.managers.Sync()))
-	router.Methods(http.MethodDelete).Path("/v1/config/projects/{project}/eventing/schema/{id}").HandlerFunc(handlers.HandleDeleteEventingSchema(s.managers.Admin(), s.managers.Sync()))
-	router.Methods(http.MethodGet).Path("/v1/config/projects/{project}/eventing/rules").HandlerFunc(handlers.HandleGetEventingSecurityRules(s.managers.Admin(), s.managers.Sync()))
-	router.Methods(http.MethodPost).Path("/v1/config/projects/{project}/eventing/rules/{id}").HandlerFunc(handlers.HandleAddEventingSecurityRule(s.managers.Admin(), s.managers.Sync()))
-	router.Methods(http.MethodDelete).Path("/v1/config/projects/{project}/eventing/rules/{id}").HandlerFunc(handlers.HandleDeleteEventingSecurityRule(s.managers.Admin(), s.managers.Sync()))
-
-	router.Methods(http.MethodGet).Path("/v1/external/projects/{project}/file-storage/connection-state").HandlerFunc(handlers.HandleGetFileState(s.managers.Admin(), s.modules))
-	router.Methods(http.MethodGet).Path("/v1/config/projects/{project}/file-storage/config").HandlerFunc(handlers.HandleGetFileStore(s.managers.Admin(), s.managers.Sync()))
-	router.Methods(http.MethodPost).Path("/v1/config/projects/{project}/file-storage/config/{id}").HandlerFunc(handlers.HandleSetFileStore(s.managers.Admin(), s.managers.Sync()))
-	router.Methods(http.MethodGet).Path("/v1/config/projects/{project}/file-storage/rules").HandlerFunc(handlers.HandleGetFileRule(s.managers.Admin(), s.managers.Sync()))
-	router.Methods(http.MethodPost).Path("/v1/config/projects/{project}/file-storage/rules/{id}").HandlerFunc(handlers.HandleSetFileRule(s.managers.Admin(), s.managers.Sync()))
-	router.Methods(http.MethodDelete).Path("/v1/config/projects/{project}/file-storage/rules/{id}").HandlerFunc(handlers.HandleDeleteFileRule(s.managers.Admin(), s.managers.Sync()))
-
-	router.Methods(http.MethodGet).Path("/v1/external/projects/{project}/database/{dbAlias}/connection-state").HandlerFunc(handlers.HandleGetDatabaseConnectionState(s.managers.Admin(), s.modules))
-	router.Methods(http.MethodGet).Path("/v1/external/projects/{project}/database/{dbAlias}/list-collections").HandlerFunc(handlers.HandleGetAllTableNames(s.managers.Admin(), s.modules))
-	router.Methods(http.MethodGet).Path("/v1/config/projects/{project}/database/collections/rules").HandlerFunc(handlers.HandleGetTableRules(s.managers.Admin(), s.managers.Sync()))
-	router.Methods(http.MethodGet).Path("/v1/config/projects/{project}/database/config").HandlerFunc(handlers.HandleGetDatabaseConfig(s.managers.Admin(), s.managers.Sync()))
-	router.Methods(http.MethodGet).Path("/v1/config/projects/{project}/database/collections/schema/mutate").HandlerFunc(handlers.HandleGetSchemas(s.managers.Admin(), s.managers.Sync()))
-	router.Methods(http.MethodPost).Path("/v1/config/projects/{project}/database/{dbAlias}/collections/{col}/rules").HandlerFunc(handlers.HandleSetTableRules(s.managers.Admin(), s.managers.Sync()))
-	router.Methods(http.MethodDelete).Path("/v1/config/projects/{project}/database/{dbAlias}/collections/{col}/rules").HandlerFunc(handlers.HandleDeleteTableRules(s.managers.Admin(), s.managers.Sync()))
-	router.Methods(http.MethodPost).Path("/v1/config/projects/{project}/database/{dbAlias}/config/{id}").HandlerFunc(handlers.HandleSetDatabaseConfig(s.managers.Admin(), s.managers.Sync()))
-	router.Methods(http.MethodDelete).Path("/v1/config/projects/{project}/database/{dbAlias}/config/{id}").HandlerFunc(handlers.HandleRemoveDatabaseConfig(s.managers.Admin(), s.managers.Sync()))
-	router.Methods(http.MethodGet).Path("/v1/config/projects/{project}/database/prepared-queries").HandlerFunc(handlers.HandleGetPreparedQuery(s.managers.Admin(), s.managers.Sync()))
-	router.Methods(http.MethodPost).Path("/v1/config/projects/{project}/database/{dbAlias}/prepared-queries/{id}").HandlerFunc(handlers.HandleSetPreparedQueries(s.managers.Admin(), s.managers.Sync()))
-	router.Methods(http.MethodDelete).Path("/v1/config/projects/{project}/database/{dbAlias}/prepared-queries/{id}").HandlerFunc(handlers.HandleRemovePreparedQueries(s.managers.Admin(), s.managers.Sync()))
-	router.Methods(http.MethodDelete).Path("/v1/config/projects/{project}/database/{dbAlias}/collections/{col}").HandlerFunc(handlers.HandleDeleteTable(s.managers.Admin(), s.modules, s.managers.Sync()))
-	router.Methods(http.MethodPost).Path("/v1/config/projects/{project}/database/{dbAlias}/schema/mutate").HandlerFunc(handlers.HandleModifyAllSchema(s.managers.Admin(), s.managers.Sync()))
-	router.Methods(http.MethodPost).Path("/v1/config/projects/{project}/database/{dbAlias}/collections/{col}/schema/mutate").HandlerFunc(handlers.HandleModifySchema(s.managers.Admin(), s.modules, s.managers.Sync()))
-	router.Methods(http.MethodPost).Path("/v1/config/projects/{project}/database/{dbAlias}/schema/inspect").HandlerFunc(handlers.HandleReloadSchema(s.managers.Admin(), s.modules, s.managers.Sync()))
-	router.Methods(http.MethodPost).Path("/v1/config/projects/{project}/database/{dbAlias}/collections/{col}/schema/track").HandlerFunc(handlers.HandleInspectCollectionSchema(s.managers.Admin(), s.modules, s.managers.Sync()))
-	router.Methods(http.MethodDelete).Path("/v1/config/projects/{project}/database/{dbAlias}/collections/{col}/schema/untrack").HandlerFunc(handlers.HandleUntrackCollectionSchema(s.managers.Admin(), s.modules, s.managers.Sync()))
-	router.Methods(http.MethodGet).Path("/v1/external/projects/{project}/database/{dbAlias}/schema/inspect").HandlerFunc(handlers.HandleInspectTrackedCollectionsSchema(s.managers.Admin(), s.modules))
 
 	router.Methods(http.MethodGet).Path("/v1/config/projects/{project}/letsencrypt/config").HandlerFunc(handlers.HandleGetEncryptWhitelistedDomain(s.managers.Admin(), s.managers.Sync()))
 	router.Methods(http.MethodPost).Path("/v1/config/projects/{project}/letsencrypt/config/{id}").HandlerFunc(handlers.HandleLetsEncryptWhitelistedDomain(s.managers.Admin(), s.managers.Sync()))
@@ -106,48 +58,6 @@ func (s *Server) routes(profiler bool, staticPath string, restrictedHosts []stri
 
 	// Health check
 	router.Methods(http.MethodGet).Path("/v1/api/health-check").HandlerFunc(handlers.HandleHealthCheck(s.managers.Sync()))
-
-	// Initialize route for graphql
-	router.Path("/v1/api/{project}/graphql").HandlerFunc(handlers.HandleGraphQLRequest(s.modules, s.managers.Sync()))
-
-	// Initialize the route for websocket
-	router.HandleFunc("/v1/api/{project}/socket/json", handlers.HandleWebsocket(s.modules))
-
-	// Initialize the route for graphql websocket
-	router.HandleFunc("/v1/api/{project}/graphql/socket", handlers.HandleGraphqlSocket(s.modules))
-
-	// Initialize the routes for services module
-	router.Methods(http.MethodPost).Path("/v1/api/{project}/services/{service}/{func}").HandlerFunc(handlers.HandleFunctionCall(s.modules))
-
-	// Initialize the routes for realtime service
-	router.Methods(http.MethodPost).Path("/v1/api/{project}/realtime/handle").HandlerFunc(handlers.HandleRealtimeEvent(s.modules))
-
-	// Initialize the routes for eventing service
-	router.Methods(http.MethodPost).Path("/v1/api/{project}/eventing/queue").HandlerFunc(handlers.HandleQueueEvent(s.modules))
-	router.Methods(http.MethodPost).Path("/v1/api/{project}/eventing/admin-queue").HandlerFunc(handlers.HandleAdminQueueEvent(s.managers.Admin(), s.modules))
-
-	// Initialize the routes for the crud operations
-	router.Methods(http.MethodPost).Path("/v1/api/{project}/crud/{dbAlias}/batch").HandlerFunc(handlers.HandleCrudBatch(s.modules))
-	router.Methods(http.MethodPost).Path("/v1/api/{project}/crud/{dbAlias}/prepared-queries/{id}").HandlerFunc(handlers.HandleCrudPreparedQuery(s.modules))
-	crudRouter := router.Methods(http.MethodPost).PathPrefix("/v1/api/{project}/crud/{dbAlias}/{col}").Subrouter()
-	crudRouter.HandleFunc("/create", handlers.HandleCrudCreate(s.modules))
-	crudRouter.HandleFunc("/read", handlers.HandleCrudRead(s.modules))
-	crudRouter.HandleFunc("/update", handlers.HandleCrudUpdate(s.modules))
-	crudRouter.HandleFunc("/delete", handlers.HandleCrudDelete(s.modules))
-	crudRouter.HandleFunc("/aggr", handlers.HandleCrudAggregate(s.modules))
-
-	// Initialize the routes for the user management operations
-	userRouter := router.PathPrefix("/v1/api/{project}/auth/{dbAlias}").Subrouter()
-	userRouter.Methods(http.MethodPost).Path("/email/signin").HandlerFunc(handlers.HandleEmailSignIn(s.modules))
-	userRouter.Methods(http.MethodPost).Path("/email/signup").HandlerFunc(handlers.HandleEmailSignUp(s.modules))
-	userRouter.Methods(http.MethodGet).Path("/profile/{id}").HandlerFunc(handlers.HandleProfile(s.modules))
-	userRouter.Methods(http.MethodGet).Path("/profiles").HandlerFunc(handlers.HandleProfiles(s.modules))
-	userRouter.Methods(http.MethodPost).Path("/edit_profile/{id}").HandlerFunc(handlers.HandleEmailEditProfile(s.modules))
-
-	// Initialize the routes for the file management operations
-	router.Methods(http.MethodPost).Path("/v1/api/{project}/files").HandlerFunc(handlers.HandleCreateFile(s.modules))
-	router.Methods(http.MethodGet).PathPrefix("/v1/api/{project}/files").HandlerFunc(handlers.HandleRead(s.modules))
-	router.Methods(http.MethodDelete).PathPrefix("/v1/api/{project}/files").HandlerFunc(handlers.HandleDelete(s.modules))
 
 	// Register pprof handlers if profiler set to true
 	if profiler {

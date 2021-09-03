@@ -29,38 +29,6 @@ func (c *Cache) SetRemoteServiceKey(ctx context.Context, redisKey string, remote
 	return c.set(ctx, redisKey, cache, string(data))
 }
 
-// GetRemoteService get remote service
-func (c *Cache) GetRemoteService(ctx context.Context, projectID, serviceID, endpoint string, cache *config.ReadCacheOptions, cacheOptions []interface{}) (*CacheResult, error) {
-	c.lock.Lock()
-	defer c.lock.Unlock()
-
-	cacheResult := new(CacheResult)
-	if !c.config.Enabled || cache == nil {
-		return cacheResult, nil
-	}
-
-	key, isCacheHit, result, err := c.get(ctx, c.generateRemoteServiceKey(projectID, serviceID, endpoint, cacheOptions))
-	if err != nil {
-		return cacheResult, err
-	}
-
-	cacheResult.redisKey = key
-	cacheResult.isCacheHit = isCacheHit
-	cacheResult.isCacheEnabled = true
-
-	if !isCacheHit {
-		return cacheResult, err
-	}
-
-	var v interface{}
-	if err := json.Unmarshal(result, &v); err != nil {
-		return cacheResult, helpers.Logger.LogError(helpers.GetRequestID(ctx), "Unable to json unmarshal result of remote service key", err, map[string]interface{}{"key": key})
-	}
-	cacheResult.result = v
-
-	return cacheResult, nil
-}
-
 // GetIngressRoute get ingress route
 func (c *Cache) GetIngressRoute(ctx context.Context, routeID string, cacheOptions []interface{}) (string, bool, *model.CacheIngressRoute, error) {
 	c.lock.Lock()
@@ -123,22 +91,6 @@ func (c *Cache) PurgeCache(ctx context.Context, projectID string, req *model.Cac
 
 	prefixKey := ""
 	switch req.Resource {
-	case config.ResourceRemoteService:
-		if req.ServiceID != "*" && req.ID != "*" {
-			prefixKey = c.generateRemoteServiceEndpointPrefixKey(projectID, req.DbAlias, req.ID)
-		} else if req.ServiceID != "*" {
-			prefixKey = c.generateRemoteServicePrefixKey(projectID, req.ServiceID)
-		} else {
-			prefixKey = c.generateRemoteServiceResourcePrefixKey(projectID)
-		}
-	case config.ResourceDatabaseSchema:
-		if req.DbAlias != "*" && req.ID != "*" {
-			prefixKey = c.generateDatabaseTablePrefixKey(projectID, req.DbAlias, req.ID)
-		} else if req.DbAlias != "*" {
-			prefixKey = c.generateDatabaseAliasPrefixKey(projectID, req.DbAlias)
-		} else {
-			prefixKey = c.generateDatabaseResourcePrefixKey(projectID)
-		}
 	case config.ResourceIngressRoute:
 		if req.ID != "*" {
 			prefixKey = c.generateIngressRoutingPrefixWithRouteID(req.ID)
