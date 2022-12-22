@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"os"
 	"strconv"
 	"time"
 
@@ -66,8 +67,8 @@ func New(c *Config) (*Server, error) {
 	}
 
 	debounce := utils.NewDebounce()
-
-	opts := badger.DefaultOptions("/tmp/runner.db")
+	runnerdbpath := os.Getenv("RUNNERDBPATH")
+	opts := badger.DefaultOptions(runnerdbpath)
 	badgerLogger := logrus.New()
 	badgerLogger.SetOutput(ioutil.Discard)
 	opts.Logger = badgerLogger

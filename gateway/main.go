@@ -228,7 +228,7 @@ func actionRun(c *cli.Context) error {
 }
 
 func initMissionContol(version string) (string, error) {
-	homeDir := utils.UserHomeDir()
+	homeDir := utils.Dir()
 	uiPath := homeDir + "/.space-cloud/mission-control-v" + version
 	_, err := os.Stat(uiPath)
 	if os.IsNotExist(err) {

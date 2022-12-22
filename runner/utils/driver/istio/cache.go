@@ -3,6 +3,7 @@ package istio
 import (
 	"context"
 	"fmt"
+	"os"
 
 	"github.com/gogo/protobuf/proto"
 	"github.com/spaceuptech/helpers"
@@ -18,7 +19,9 @@ type cache struct {
 }
 
 func newCache(kube *kubernetes.Clientset) (*cache, error) {
-	db, err := bolt.Open("./runner.db", 0666, nil)
+	runnerdbpath := os.Getenv("RUNNERDBPATH")
+
+	db, err := bolt.Open(runnerdbpath, 0666, nil)
 	if err != nil {
 		return nil, err
 	}
